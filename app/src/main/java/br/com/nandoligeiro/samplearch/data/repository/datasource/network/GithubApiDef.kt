@@ -1,10 +1,16 @@
 package br.com.nandoligeiro.samplearch.data.repository.datasource.network
 
+import br.com.nandoligeiro.samplearch.data.vo.RepoResponse
+import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface GithubApiDef {
+
+    @GET("/repositories")
+    fun getRepositories(): Call<List<RepoResponse>>
+
 
     @GET("/search/repositories")
     fun getJavaRepositories(@Query("q") q: String,
