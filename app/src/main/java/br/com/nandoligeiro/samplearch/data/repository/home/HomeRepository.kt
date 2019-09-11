@@ -4,10 +4,9 @@ import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import br.com.nandoligeiro.samplearch.data.model.Repo
 import br.com.nandoligeiro.samplearch.data.repository.datasource.network.GithubApi
-import br.com.nandoligeiro.samplearch.data.vo.RepoResponse
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
 class HomeRepository {
 
@@ -16,29 +15,32 @@ class HomeRepository {
         val data = MutableLiveData<List<Repo>>()
         val repos: MutableList<Repo> = mutableListOf()
 
-        GithubApi.api.getRepositories().enqueue(object: Callback<List<RepoResponse>> {
-            override fun onFailure(call: Call<List<RepoResponse>>, t: Throwable) {
-                t
-            }
+        GlobalScope.launch(Dispatchers.Main) {
+            val response = GithubApi.api.getRepositoriesAsync().await()
 
-            override fun onResponse(call: Call<List<RepoResponse>>, response: Response<List<RepoResponse>>) {
-                if (response.isSuccessful) {
-                    response.body()?.let {
-                        for (repoResponse in it){
-                            with(repoResponse){
-                                val repo = Repo(repoId, repoName, description, owner.authorName, owner.imgProfile)
-                                repos.add(repo)
-                            }
-
+            if (response.isSuccessful) {
+                response.body()?.let {
+                    for (repoResponse in it) {
+                        with(repoResponse) {
+                            val repo = Repo(
+                                repoId,
+                                repoName,
+                                description,
+                                owner.authorName,
+                                owner.imgProfile
+                            )
+                            repos.add(repo)
                         }
 
                     }
 
                     data.value = repos
                 }
-            }
 
-        })
+            } else {
+                Log.d("GET REPOSITORIES", "Error ${response.code()}")
+            }
+        }
 
 
         return data

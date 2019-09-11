@@ -3,6 +3,7 @@ package br.com.nandoligeiro.samplearch.data.repository.datasource.network
 import android.util.Log
 import br.com.nandoligeiro.samplearch.BuildConfig
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
+import com.squareup.moshi.Moshi
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 import okhttp3.logging.HttpLoggingInterceptor
@@ -46,10 +47,14 @@ object GithubApi{
                 response
             }.build()
 
-        return  Retrofit.Builder()
+        val moshi = Moshi.Builder()
+            .add(NullToEmptyStringAdapter())
+            .build()
+
+        return Retrofit.Builder()
             .baseUrl(BuildConfig.BASE_URL)
+            .addConverterFactory(MoshiConverterFactory.create(moshi))
             .client(okClient)
-            .addConverterFactory(MoshiConverterFactory.create())
             .addCallAdapterFactory(CoroutineCallAdapterFactory())
             .build()
 
