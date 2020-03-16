@@ -9,4 +9,5 @@ import br.com.nandoligeiro.samplearch.data.repository.home.HomeRepository
 class HomeViewModel : ViewModel() {
 
     val repositories: MutableLiveData<List<Repo>> = HomeRepository().getRepositories()
+
 }
