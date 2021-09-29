@@ -1,8 +1,6 @@
-package br.com.nandoligeiro.samplearch.data.repository.datasource.network
+package br.com.nandoligeiro.samplearch.data.network
 
-import androidx.annotation.Nullable
 import com.squareup.moshi.FromJson
-import com.squareup.moshi.JsonQualifier
 import com.squareup.moshi.JsonReader
 import com.squareup.moshi.ToJson
 

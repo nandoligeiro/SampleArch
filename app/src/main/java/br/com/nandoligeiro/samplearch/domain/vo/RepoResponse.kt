@@ -1,4 +1,4 @@
-package br.com.nandoligeiro.samplearch.data.vo
+package br.com.nandoligeiro.samplearch.domain.vo
 
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass

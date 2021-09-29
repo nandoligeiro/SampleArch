@@ -1,4 +1,4 @@
-package br.com.nandoligeiro.samplearch.data.repository.datasource.network
+package br.com.nandoligeiro.samplearch.data.network
 
 import android.util.Log
 import br.com.nandoligeiro.samplearch.BuildConfig
@@ -11,7 +11,7 @@ import okhttp3.OkHttpClient
 import java.util.*
 
 
-object GithubApi{
+object GithubApiImpl{
 
     private fun initRetrofit(): Retrofit {
 
@@ -60,5 +60,5 @@ object GithubApi{
 
     }
 
-    val api : GithubApiDef = initRetrofit().create(GithubApiDef::class.java)
+    val api : GithubApi = initRetrofit().create(GithubApi::class.java)
 }

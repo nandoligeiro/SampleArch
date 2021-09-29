@@ -1,17 +1,15 @@
-package br.com.nandoligeiro.samplearch.data.repository.datasource.network
+package br.com.nandoligeiro.samplearch.data.network
 
-import br.com.nandoligeiro.samplearch.data.vo.RepoResponse
-import kotlinx.coroutines.Deferred
-import retrofit2.Call
-import retrofit2.Response
+import br.com.nandoligeiro.samplearch.domain.vo.RepoResponse
 import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query
 
-interface GithubApiDef {
+interface GithubApi {
+
 
     @GET("/repositories")
-    fun getRepositoriesAsync(): Deferred<Response<List<RepoResponse>>>
+    suspend fun getRepositories(): List<RepoResponse>
 
 
     @GET("/search/repositories")
@@ -25,7 +23,7 @@ interface GithubApiDef {
 
 
     @GET("users/{user}")
-     fun getUser(@Path("user") user: String)
+    fun getUser(@Path("user") user: String)
 
 
 }

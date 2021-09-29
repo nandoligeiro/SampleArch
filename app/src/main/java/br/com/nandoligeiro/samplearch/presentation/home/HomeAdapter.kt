@@ -1,40 +1,47 @@
 package br.com.nandoligeiro.samplearch.presentation.home
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import br.com.nandoligeiro.samplearch.R
-import br.com.nandoligeiro.samplearch.data.model.Repo
-import kotlinx.android.synthetic.main.card_home.view.*
+import br.com.nandoligeiro.samplearch.data.repository.home.RepoData
+import br.com.nandoligeiro.samplearch.databinding.CardHomeBinding
 
-class HomeAdapter(private val repos: List<Repo>, private val listener: (Repo) -> Unit) : RecyclerView.Adapter<HomeAdapter.HomeViewHolder>() {
+class HomeAdapter(private val listener: (RepoData) -> Unit) : RecyclerView.Adapter<HomeAdapter.HomeViewHolder>() {
+
+    private var repositoryList = ArrayList<RepoData>()
+
+    companion object{
+        const val EMPTY_LIST = 0
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HomeViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.card_home, parent, false)
-        return HomeViewHolder(view)
+        val binding = CardHomeBinding.inflate(LayoutInflater.from(parent.context))
+        return HomeViewHolder(binding)
     }
 
-    override fun getItemCount() = repos.size
+    override fun getItemCount() = if (repositoryList.isNullOrEmpty()) EMPTY_LIST else repositoryList.size
 
     override fun onBindViewHolder(holder: HomeViewHolder, position: Int) {
-        holder.bindingView(repos[position],listener)
+        holder.bindingView(repositoryList[position],listener)
     }
 
-    class HomeViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    fun notifyAdapter(gitRepositoryList: List<RepoData>){
+        repositoryList = gitRepositoryList as ArrayList<RepoData>
+        notifyDataSetChanged()
+    }
 
-        fun bindingView(repo: Repo, listener: (Repo) -> Unit) {
+    class HomeViewHolder(private val binding: CardHomeBinding) : RecyclerView.ViewHolder(binding.root) {
 
-            itemView.title.text = repo.repoName
-            itemView.description.text = repo.description
-            itemView.forks.text = repo.numberOfForks.toString()
-            itemView.stars.text = repo.numberOfStars.toString()
+        fun bindingView(repo: RepoData, listener: (RepoData) -> Unit) {
+            binding.username.text = repo.authorName
+            binding.title.text = repo.repoName
+            binding.description.text = repo.description
+            binding.forks.text = repo.numberOfForks.toString()
+            binding.stars.text = repo.numberOfStars.toString()
 
             itemView.setOnClickListener{
                 listener(repo)
             }
         }
-
-
     }
 }

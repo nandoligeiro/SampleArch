@@ -1,7 +1,7 @@
-package br.com.nandoligeiro.samplearch.data.model
+package br.com.nandoligeiro.samplearch.data.repository.home
 
 
-data class Repo(
+data class RepoData(
     val repoId: Int,
     val repoName: String,
     val description: String,
